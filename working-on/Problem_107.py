@@ -11,6 +11,7 @@
 import unittest
 import sys
 import os
+import random
 
 # Test Suite
 class Test_Problem_107(unittest.TestCase):
@@ -46,7 +47,7 @@ def get_network_data():
 	# Parse input file into matrix form
 	f = open(sys.argv[2])
 	for line in f:
-		network.append(map(int, line.strip().replace('-','0').split(',')))
+		network.append([int(x) for x in line.strip().replace('-','0').split(',')])
 	f.close()
 
 	return network
@@ -60,8 +61,45 @@ def compute_network_savings(network):
 	return compute_network_weight(network) - compute_network_weight(optimal)
 
 def optimal_network_structure(network):
-	""" Compute minimum spanning tree of a network """
-	return network
+	""" Compute minimum spanning tree of a network 
+
+	Implemented with Prim's algorithm """
+	network_size = len(network)
+
+	# Check for empty network
+	if not network_size:
+		return []
+	
+	# No edge can have a weight greater than the weight of the network
+	max_weight = compute_network_weight(network) + 1
+
+	# Initialize visited vertices and edges
+	visited = [0]
+	edges = [[0 for col in range(network_size)] for row in range(network_size)]
+
+	# Repeat until all vertices visited by MST
+	while len(visited) < len(network):
+		
+		# Initialize smallest weight to maximum weight
+		min_weight = max_weight
+		src = 0
+		dest = -1
+		
+		# Find minimum edge-weight (src, dest) where src is visited, dest is not
+		# If there is a tie, winner is arbitrary
+		for vertex in visited:
+			for opt in range(network_size):
+				if opt not in visited and network[vertex][opt] and \
+					network[vertex][opt] < min_weight:
+					# Update tracker values
+					min_weight = network[vertex][opt]
+					src, dest = vertex, opt
+					
+		# Add destination to visited list, edge to edges matrix
+		visited.append(dest)
+		edges[src][dest] = edges[dest][src] = network[src][dest]
+	
+	return edges
 
 def compute_network_weight(network):
 	""" Computes total weight of top-right triangle of network """
