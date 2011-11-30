@@ -5,7 +5,8 @@
 # Given an undirected network of vertices and edges, represented as a matrix,
 # remove edges to save edge weight while keeping all vertices connected.
 # 
-# Goal: Compute maximum saving by removing redundant edges.
+# Goal: Compute maximum saving by removing redundant edges. Basically a 
+# Minimum Spanning Tree problem.
 
 import unittest
 import sys
@@ -44,8 +45,8 @@ def get_network_data():
 
 	# Parse input file into matrix form
 	f = open(sys.argv[2])
-		#for line in f:
-		#	print line.strip().split(',')
+	for line in f:
+		network.append(map(int, line.strip().replace('-','0').split(',')))
 	f.close()
 
 	return network
@@ -63,8 +64,8 @@ def optimal_network_structure(network):
 	return network
 
 def compute_network_weight(network):
-	""" Computes total weight of a network """
-	return 0
+	""" Computes total weight of top-right triangle of network """
+	return sum(map(sum, network))/2
 
 # Main Function
 if __name__ == '__main__':
