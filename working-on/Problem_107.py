@@ -9,6 +9,7 @@
 
 import unittest
 import sys
+import os
 
 # Test Suite
 class Test_Problem_107(unittest.TestCase):
@@ -29,9 +30,7 @@ class Test_Problem_107(unittest.TestCase):
 	def test_compute_training_savings(self):
 		""" Training network can save 150 weight removing redundant edges """
 		training = get_network_data()
-		training_optimal = optimal_network_structure(training)
-		self.assertEqual(150, compute_network_weight(training) - \
-								compute_network_weight(training_optimal))
+		self.assertEqual(150, compute_network_savings(training))
 
 # Functions
 def get_network_data():
@@ -39,34 +38,56 @@ def get_network_data():
 	# Initialize network
 	network = []
 
-	# Check for valid arguments, and parse network if possible
-	if sys.argv[1] == '-train' or sys.argv[1] == '-test':
-		
-		# Parse input file into matrix form
-		f = open(sys.argv[2])
-			#for line in f:
-			#	print line.strip().split(',')
-		f.close()
+	# Ensure that input data file exists, return empty network
+	if not os.path.isfile(sys.argv[2]):
+		return network
+
+	# Parse input file into matrix form
+	f = open(sys.argv[2])
+		#for line in f:
+		#	print line.strip().split(',')
+	f.close()
 
 	return network
+
+def compute_network_savings(network):
+	""" Compute savings between start network and optimal network """
+	# Compute optimal network
+	optimal = optimal_network_structure(network)
+
+	# Saving is difference between size of old and new network
+	return compute_network_weight(network) - compute_network_weight(optimal)
+
+def optimal_network_structure(network):
+	""" Compute minimum spanning tree of a network """
+	return network
+
+def compute_network_weight(network):
+	""" Computes total weight of a network """
+	return 0
 
 # Main Function
 if __name__ == '__main__':
 	
 	if len(sys.argv) > 1:
 		# Parse input arguments: Training (Run test suite)
-		if sys.argv[1] == "-train":
-			pass
+		if sys.argv[1] == "-test":
+			suite = unittest.TestLoader().loadTestsFromTestCase(Test_Problem_107)
+			unittest.TextTestRunner(verbosity=2).run(suite)
 
 		# Parse input arguments: Testing (Results)
-		elif sys.argv[2] == "-test":
-			pass
+		elif sys.argv[1] == "-run":
+			# Get network matrix
+			matrix = get_network_data()
+
+			# Compute savings
+			print "Distance saved:", compute_network_savings(matrix)
 
 		# Invalid input format
 		else:
-			print "Please specify -test or -train dataset"
+			print "Please specify -test or -run argument"
 
 	else:
 		# Invalid input arguments message
 		print "Expected input arguments: -[flag] path/to/datafile\n",\
-				"Flags: train (runs test suite), test (performance)"
+				"Flags: test (runs test suite), run (performance)"
