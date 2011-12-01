@@ -48,6 +48,10 @@ def count_laminae(tiles_available, exact=False):
 	@param tiles_available is the tiles available, inclusive
 	@param exact, default False, is whether all tiles must be used at once
 	"""
+	# At least 8 tiles required to create proper lamina
+	if tiles_available < 8:
+		return 0
+
 	return -1
 
 if __name__ == '__main__':
