@@ -78,10 +78,15 @@ def count_laminae(tiles_available, exact=False):
 		# Conditions: measure must be >= 2, and using at most tiles_available
 		while measure >= 2 and tiles_used <= tiles_available:
 			
-			# Update lamina counter for this layer
-			lamina_count += 1
+			# If exact expectation, tiles_used must equal tiles_available
+			if exact and tiles_used == tiles_available:
+				lamina_count += 1
 
-			# Update measure, tiles used for next hypothetical layer
+			# If no exact expectation, simply update lamina count
+			elif not exact: 
+				lamina_count += 1
+
+			# Decrement measure, compute next layer tiles used
 			measure -= 2
 			tiles_used += measure*4
 
