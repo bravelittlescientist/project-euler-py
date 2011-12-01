@@ -52,7 +52,43 @@ def count_laminae(tiles_available, exact=False):
 	if tiles_available < 8:
 		return 0
 
-	return -1
+	# Initialize lamina counter
+	combinations = {}
+	lamina_count = 0
+
+	# Start with smaller laminae, and use them to nest into larger ones.
+	# A basic outline has 4n, where n is the length of a side with 1 corner
+	# tile. The minimum n is 2 (creating a lamina of size 8).
+	n = 2
+
+	# To avoid divisibility issues, we start with the smallest
+	# size of a side + 1 corner, n = 2. All 4*n laminae are thus
+	# fair game. While the maximum one-layer square is achievable...
+	while 4*n <= tiles_available:
+
+		# Initialize current laminae count
+		# This is useful to track existing n
+		# current = 0
+
+		# We count outlins until we run out of tiles, or run out of
+		# lamina space
+		measure = n 
+		tiles_used = measure*4
+
+		# Conditions: measure must be >= 2, and using at most tiles_available
+		while measure >= 2 and tiles_used <= tiles_available:
+			
+			# Update lamina counter for this layer
+			lamina_count += 1
+
+			# Update measure, tiles used for next hypothetical layer
+			measure -= 2
+			tiles_used += measure*4
+
+		# Increment n value
+		n += 1
+
+	return lamina_count
 
 if __name__ == '__main__':
 	
