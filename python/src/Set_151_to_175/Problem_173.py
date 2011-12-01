@@ -52,8 +52,7 @@ def count_laminae(tiles_available, exact=False):
 	if tiles_available < 8:
 		return 0
 
-	# Initialize lamina counter
-	combinations = {}
+	# Initialize lamina count
 	lamina_count = 0
 
 	# Start with smaller laminae, and use them to nest into larger ones.
@@ -66,9 +65,8 @@ def count_laminae(tiles_available, exact=False):
 	# fair game. While the maximum one-layer square is achievable...
 	while 4*n <= tiles_available:
 
-		# Initialize current laminae count
-		# This is useful to track existing n
-		# current = 0
+		# Track lamina created at this iteration
+		current = 0
 
 		# We count outlins until we run out of tiles, or run out of
 		# lamina space
@@ -109,4 +107,4 @@ if __name__ == '__main__':
 	# To check actual result
 	elif sys.argv[1] == '-run':
 		print "Using up to 1 million tiles, quantity laminae:",\
-			count_laminae(999999)
+			count_laminae(1000000)
