@@ -52,6 +52,19 @@ def minimal_diophantine_solution_in_x(D):
 	if 0.0 == int(D**0.5) % D**0.5:
 		return -1
 
+	# We increment x and y until a y is found such that 
+	# x^2 - D*y^2 = 1
+	x = 1
+	y = 1
+	while x > 0:
+		# Increment y until it is too large to satisfy for D in x
+		while x**2 - (D*(y**2)) > 1:
+			y += 1
+
+		if x**2 - (D*(y**2)) == 1:
+			return x
+		else:
+			x += 1 
 
 	return 0
 
