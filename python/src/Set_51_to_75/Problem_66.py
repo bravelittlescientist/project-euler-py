@@ -48,6 +48,11 @@ class Test_Problem_66(unittest.TestCase):
 
 def minimal_diophantine_solution_in_x(D):
 	""" Compute minimal diophantine solution in x, given D """
+	# Check if D is a square by rounding sqrt
+	if 0.0 == int(D**0.5) % D**0.5:
+		return -1
+
+
 	return 0
 
 def optimal_diophantine_minimal_in_x(upper_limit):
