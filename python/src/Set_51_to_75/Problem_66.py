@@ -55,24 +55,24 @@ def minimal_diophantine_solution_in_x(D):
 
 	# Dealing only with positive integers, we're not worried about
 	# division by 0. y will only satisfy the equation for a given x 
-	# if (x^2 - 1)/D == y**2, which means that (x^2 - 1)/D must have
-	# an integer square root. 
+	# if x^2 == Dy^2 + 1, which means that Dy^2 + 1 must have an integer
+	# square root. This is much faster than incrementing x, because
+	# y will be smaller than x.
 	
-	# Initialize x at 2
-	x = 2
+	# Initialize y at 1
+	y = 1
 	
 	# Only return when square root test passes
-	while x > 0:
+	while y > 0:
 
-		# Compute y_squared
-		y_squared = (x**2 - 1.0)/D
+		# Compute x_squared
+		x_squared = D*(y**2) + 1
 
-		# Check if y_squared is an integer, and if it has a 
-		if math.ceil(y_squared) == y_squared and \
-			math.ceil(math.sqrt(y_squared)) == math.sqrt(y_squared):
-			return x
+		# Check if x_squared has an integer square root
+		if math.ceil(math.sqrt(x_squared)) == math.sqrt(x_squared):
+			return int(math.sqrt(x_squared))
 		else:
-			x += 1
+			y += 1
 
 	return -1
 
@@ -87,6 +87,8 @@ def optimal_diophantine_minimal_in_x(upper_limit):
 	# For each 1 <= D <= upper_limit, compute minimal x for D
 	# Update maximum_x, optimal_D if satisfied
 	for D in range(1, upper_limit):
+
+		#print D
 
 		# Compute minimal x solution
 		x = minimal_diophantine_solution_in_x(D)
