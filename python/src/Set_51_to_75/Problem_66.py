@@ -24,6 +24,7 @@
 # value of x is obtained.
 
 import unittest
+import math
 
 class Test_Problem_66(unittest.TestCase):
 	
@@ -52,21 +53,28 @@ def minimal_diophantine_solution_in_x(D):
 	if 0.0 == int(D**0.5) % D**0.5:
 		return -1
 
-	# We increment x and y until a y is found such that 
-	# x^2 - D*y^2 = 1
-	x = 1
-	y = 1
+	# Dealing only with positive integers, we're not worried about
+	# division by 0. y will only satisfy the equation for a given x 
+	# if (x^2 - 1)/D == y**2, which means that (x^2 - 1)/D must have
+	# an integer square root. 
+	
+	# Initialize x at 2
+	x = 2
+	
+	# Only return when square root test passes
 	while x > 0:
-		# Increment y until it is too large to satisfy for D in x
-		while x**2 - (D*(y**2)) > 1:
-			y += 1
 
-		if x**2 - (D*(y**2)) == 1:
+		# Compute y_squared
+		y_squared = (x**2 - 1.0)/D
+
+		# Check if y_squared is an integer, and if it has a 
+		if math.ceil(y_squared) == y_squared and \
+			math.ceil(math.sqrt(y_squared)) == math.sqrt(y_squared):
 			return x
 		else:
-			x += 1 
+			x += 1
 
-	return 0
+	return -1
 
 def optimal_diophantine_minimal_in_x(upper_limit):
 	""" Find D for which largest X is obtianed, for diophantine solutions
@@ -79,6 +87,7 @@ def optimal_diophantine_minimal_in_x(upper_limit):
 	# For each 1 <= D <= upper_limit, compute minimal x for D
 	# Update maximum_x, optimal_D if satisfied
 	for D in range(1, upper_limit):
+
 		# Compute minimal x solution
 		x = minimal_diophantine_solution_in_x(D)
 
@@ -93,3 +102,6 @@ if __name__ == '__main__':
 	# Run unit tests
 	suite = unittest.TestLoader().loadTestsFromTestCase(Test_Problem_66)
 	unittest.TextTestRunner(verbosity=2).run(suite)
+
+	#print "D <= 1000 in minimal solutions of x -> largest obtained:", \
+	#	optimal_diophantine_minimal_in_x(1001)
