@@ -44,7 +44,7 @@ class Test_Problem_66(unittest.TestCase):
 		""" Considering minimal solutions in x for D <= threshold, find
 		D for which largest x is obtained
 		"""
-		self.assertEqual(5, optimal_diophantine_minimal_in_x(7))
+		self.assertEqual(5, optimal_diophantine_minimal_in_x(8))
 
 def minimal_diophantine_solution_in_x(D):
 	""" Compute minimal diophantine solution in x, given D """
@@ -72,7 +72,22 @@ def optimal_diophantine_minimal_in_x(upper_limit):
 	""" Find D for which largest X is obtianed, for diophantine solutions
 	minimal in x
 	"""
-	return 0
+	# Initialize D, maximum value of x
+	optimal_D = 1
+	maximum_x = -1
+
+	# For each 1 <= D <= upper_limit, compute minimal x for D
+	# Update maximum_x, optimal_D if satisfied
+	for D in range(1, upper_limit):
+		# Compute minimal x solution
+		x = minimal_diophantine_solution_in_x(D)
+
+		# If x exceeds existing maximum, update maximum and optimal D
+		if x > maximum_x:
+			maximum_x = x
+			optimal_D = D
+
+	return optimal_D
 
 if __name__ == '__main__':
 	# Run unit tests
