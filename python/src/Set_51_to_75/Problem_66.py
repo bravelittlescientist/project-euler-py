@@ -88,8 +88,6 @@ def optimal_diophantine_minimal_in_x(upper_limit):
 	# Update maximum_x, optimal_D if satisfied
 	for D in range(1, upper_limit):
 
-		#print D
-
 		# Compute minimal x solution
 		x = minimal_diophantine_solution_in_x(D)
 
@@ -105,5 +103,5 @@ if __name__ == '__main__':
 	suite = unittest.TestLoader().loadTestsFromTestCase(Test_Problem_66)
 	unittest.TextTestRunner(verbosity=2).run(suite)
 
-	#print "D <= 1000 in minimal solutions of x -> largest obtained:", \
-	#	optimal_diophantine_minimal_in_x(1001)
+	print "D <= 1000 in minimal solutions of x -> largest obtained:", \
+	optimal_diophantine_minimal_in_x(1001)
